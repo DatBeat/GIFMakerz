@@ -1,0 +1,164 @@
+// src/components/AdvancedSettings.tsx
+import { useState } from 'react';
+import { useGifStore } from '../stores/gifStore';
+import type { Transition, DitherMethod } from '../types';
+
+export default function AdvancedSettings() {
+  const [isOpen, setIsOpen] = useState(false);
+  const settings = useGifStore((s) => s.settings);
+  const updateSettings = useGifStore((s) => s.updateSettings);
+
+  return (
+    <div className="border border-gray-200 rounded-lg">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+      >
+        <span>Paramètres avancés</span>
+        <span className={`transform transition-transform ${isOpen ? 'rotate-90' : ''}`}>▸</span>
+      </button>
+
+      {isOpen && (
+        <div className="px-4 pb-4 space-y-4 border-t border-gray-200 pt-4">
+          {/* Transition */}
+          <div>
+            <label className="text-sm text-gray-600 mb-1 block">Transition</label>
+            <select
+              value={settings.transition}
+              onChange={(e) => updateSettings({ transition: e.target.value as Transition })}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="none">Aucune</option>
+              <option value="crossfade">Fondu (crossfade)</option>
+              <option value="slide">Slide</option>
+            </select>
+          </div>
+
+          {/* Durée de transition - only shown if transition is not "none" */}
+          {settings.transition !== 'none' && (
+            <div>
+              <label className="flex items-center justify-between text-sm text-gray-600 mb-1">
+                <span>Durée de transition</span>
+                <span className="font-mono text-gray-900">{settings.transitionDuration}ms</span>
+              </label>
+              <input
+                type="range"
+                min={100}
+                max={1000}
+                step={50}
+                value={settings.transitionDuration}
+                onChange={(e) => updateSettings({ transitionDuration: Number(e.target.value) })}
+                className="w-full accent-blue-600"
+              />
+            </div>
+          )}
+
+          {/* Hauteur de sortie */}
+          <div>
+            <label className="text-sm text-gray-600 mb-1 block">Hauteur de sortie</label>
+            <div className="flex items-center gap-3">
+              <label className="flex items-center gap-1.5 cursor-pointer">
+                <input
+                  type="radio"
+                  checked={settings.outputHeight === 'auto'}
+                  onChange={() => updateSettings({ outputHeight: 'auto' })}
+                  className="accent-blue-600"
+                />
+                <span className="text-sm text-gray-700">Auto (conserve ratio)</span>
+              </label>
+              <label className="flex items-center gap-1.5 cursor-pointer">
+                <input
+                  type="radio"
+                  checked={settings.outputHeight !== 'auto'}
+                  onChange={() => updateSettings({ outputHeight: 400 })}
+                  className="accent-blue-600"
+                />
+                <span className="text-sm text-gray-700">Personnalisé</span>
+              </label>
+            </div>
+            {settings.outputHeight !== 'auto' && (
+              <input
+                type="number"
+                min={100}
+                max={800}
+                value={settings.outputHeight}
+                onChange={(e) => updateSettings({ outputHeight: Number(e.target.value) })}
+                className="mt-2 w-24 border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            )}
+          </div>
+
+          {/* Poids max cible */}
+          <div>
+            <label className="text-sm text-gray-600 mb-1 block">Poids max cible</label>
+            <select
+              value={settings.maxFileSize === 'unlimited' ? 'unlimited' : settings.maxFileSize}
+              onChange={(e) =>
+                updateSettings({
+                  maxFileSize: e.target.value === 'unlimited' ? 'unlimited' : Number(e.target.value),
+                })
+              }
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value={250}>250 KB</option>
+              <option value={500}>500 KB</option>
+              <option value={1000}>1 MB</option>
+              <option value="unlimited">Illimité</option>
+            </select>
+          </div>
+
+          {/* Dithering */}
+          <div>
+            <label className="text-sm text-gray-600 mb-1 block">Dithering</label>
+            <select
+              value={settings.dithering}
+              onChange={(e) => updateSettings({ dithering: e.target.value as DitherMethod })}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="none">Aucun</option>
+              <option value="FloydSteinberg">Floyd-Steinberg</option>
+              <option value="ordered">Ordered</option>
+            </select>
+          </div>
+
+          {/* Nombre de couleurs */}
+          <div>
+            <label className="text-sm text-gray-600 mb-1 block">Nombre de couleurs</label>
+            <select
+              value={settings.colorCount}
+              onChange={(e) => updateSettings({ colorCount: Number(e.target.value) })}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value={16}>16</option>
+              <option value={32}>32</option>
+              <option value={64}>64</option>
+              <option value={128}>128</option>
+              <option value={256}>256</option>
+            </select>
+          </div>
+
+          {/* Vitesse d'encodage */}
+          <div>
+            <label className="flex items-center justify-between text-sm text-gray-600 mb-1">
+              <span>Vitesse d'encodage</span>
+              <span className="font-mono text-gray-900">{settings.encodingSpeed}</span>
+            </label>
+            <input
+              type="range"
+              min={1}
+              max={10}
+              step={1}
+              value={settings.encodingSpeed}
+              onChange={(e) => updateSettings({ encodingSpeed: Number(e.target.value) })}
+              className="w-full accent-blue-600"
+            />
+            <div className="flex justify-between text-xs text-gray-400">
+              <span>Meilleure qualité</span>
+              <span>Plus rapide</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
