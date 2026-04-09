@@ -10,6 +10,7 @@ import AdvancedSettings from './components/AdvancedSettings';
 import Preview from './components/Preview';
 import GenerateButton from './components/GenerateButton';
 import DownloadPanel from './components/DownloadPanel';
+import SmartOptimizer from './components/SmartOptimizer';
 
 export default function App() {
   useTheme();
@@ -33,6 +34,7 @@ export default function App() {
           <>
             <section className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 space-y-5">
               <PresetBar />
+              <SmartOptimizer />
               <hr className="border-gray-100 dark:border-gray-700" />
               <SettingsPanel />
               <AdvancedSettings />

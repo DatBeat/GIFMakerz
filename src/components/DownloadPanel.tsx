@@ -1,6 +1,8 @@
 // src/components/DownloadPanel.tsx
 import { useGifStore } from '../stores/gifStore';
 import { formatSize, getSizeCategory } from '../utils/weightEstimator';
+import CopyHtmlSnippet from './CopyHtmlSnippet';
+import EmailClientPreview from './EmailClientPreview';
 
 export default function DownloadPanel() {
   const generatedGif = useGifStore((s) => s.generatedGif);
@@ -59,6 +61,9 @@ export default function DownloadPanel() {
       >
         Télécharger le GIF
       </button>
+
+      <CopyHtmlSnippet metadata={metadata} />
+      <EmailClientPreview />
     </div>
   );
 }
