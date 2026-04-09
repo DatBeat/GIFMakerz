@@ -1,5 +1,6 @@
 import { useGifStore } from './stores/gifStore';
 import { useTheme } from './hooks/useTheme';
+import { useClipboardPaste } from './hooks/useClipboardPaste';
 import Header from './components/Header';
 import ImageUploader from './components/ImageUploader';
 import FrameList from './components/FrameList';
@@ -12,6 +13,7 @@ import DownloadPanel from './components/DownloadPanel';
 
 export default function App() {
   useTheme();
+  useClipboardPaste();
   const frameCount = useGifStore((s) => s.frames.length);
 
   return (

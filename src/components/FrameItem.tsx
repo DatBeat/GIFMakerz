@@ -1,6 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { FrameImage } from '../types';
+import FrameDurationSlider from './FrameDurationSlider';
 
 interface Props {
   frame: FrameImage;
@@ -47,7 +48,10 @@ export default function FrameItem({ frame, index, onRemove }: Props) {
       >
         ×
       </button>
-      <div className="px-2 py-1 text-xs text-gray-500 dark:text-gray-400 truncate">{frame.name}</div>
+      <div className="px-1 py-0.5">
+        <div className="text-[10px] text-gray-500 dark:text-gray-400 truncate px-0.5">{frame.name}</div>
+        <FrameDurationSlider frameId={frame.id} duration={frame.duration} />
+      </div>
     </div>
   );
 }

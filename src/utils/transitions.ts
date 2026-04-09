@@ -6,6 +6,7 @@ export interface TransitionConfig {
   frameDuration: number;
   width: number;
   height: number;
+  frameDurations?: (number | undefined)[];
 }
 
 function generateCrossfadeFrames(
@@ -71,7 +72,7 @@ export async function buildFramesWithTransitions(
   const result: { canvas: HTMLCanvasElement; delay: number }[] = [];
 
   for (let i = 0; i < canvases.length; i++) {
-    result.push({ canvas: canvases[i], delay: frameDuration });
+    result.push({ canvas: canvases[i], delay: config.frameDurations?.[i] ?? frameDuration });
 
     if (i < canvases.length - 1) {
       const generator = type === 'crossfade' ? generateCrossfadeFrames : generateSlideFrames;

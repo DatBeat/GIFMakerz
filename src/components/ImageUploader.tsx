@@ -42,7 +42,7 @@ export default function ImageUploader() {
         <p className="text-gray-700 dark:text-gray-200 font-medium">
           {isDragActive ? 'Déposez vos images ici...' : 'Glissez vos images ici'}
         </p>
-        <p className="text-gray-500 dark:text-gray-400 text-sm">ou cliquez pour sélectionner</p>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">ou cliquez / collez (Ctrl+V)</p>
         <p className="text-gray-400 dark:text-gray-500 text-xs">
           PNG, JPG, WEBP • 2 à 20 images ({frameCount}/20)
         </p>

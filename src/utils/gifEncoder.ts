@@ -41,7 +41,8 @@ export interface EncodeResult {
 export async function encodeGif(
   imageUrls: string[],
   settings: GifSettings,
-  onProgress: (progress: number) => void
+  onProgress: (progress: number) => void,
+  frameDurations?: (number | undefined)[]
 ): Promise<EncodeResult> {
   const firstImg = await loadImage(imageUrls[0]);
   const height = computeHeight(firstImg, settings.outputWidth, settings.outputHeight);
@@ -55,13 +56,14 @@ export async function encodeGif(
       frameDuration: settings.frameDuration,
       width: settings.outputWidth,
       height,
+      frameDurations,
     });
   } else {
     const canvases: { canvas: HTMLCanvasElement; delay: number }[] = [];
-    for (const url of imageUrls) {
-      const img = await loadImage(url);
+    for (let i = 0; i < imageUrls.length; i++) {
+      const img = await loadImage(imageUrls[i]);
       const canvas = drawImageToCanvas(img, settings.outputWidth, height);
-      canvases.push({ canvas, delay: settings.frameDuration });
+      canvases.push({ canvas, delay: frameDurations?.[i] ?? settings.frameDuration });
     }
     frames = canvases;
   }

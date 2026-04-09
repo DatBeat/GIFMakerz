@@ -4,6 +4,7 @@ export interface FrameImage {
   file: File;
   url: string;
   name: string;
+  duration?: number;
 }
 
 export type Quality = 'low' | 'medium' | 'high';
@@ -62,6 +63,7 @@ export interface GifState {
   setGenerating: (value: boolean) => void;
   setProgress: (value: number) => void;
   setGeneratedGif: (blob: Blob | null, metadata: GifMetadata | null) => void;
+  updateFrameDuration: (frameId: string, duration: number | undefined) => void;
   setTheme: (theme: ThemeMode) => void;
   reset: () => void;
 }

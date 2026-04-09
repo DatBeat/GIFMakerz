@@ -95,6 +95,23 @@ describe('gifStore', () => {
     });
   });
 
+  describe('per-frame duration', () => {
+    it('updates individual frame duration', () => {
+      useGifStore.getState().addFrames([createMockFile('a.png')]);
+      const id = useGifStore.getState().frames[0].id;
+      useGifStore.getState().updateFrameDuration(id, 1000);
+      expect(useGifStore.getState().frames[0].duration).toBe(1000);
+    });
+
+    it('clears individual frame duration', () => {
+      useGifStore.getState().addFrames([createMockFile('a.png')]);
+      const id = useGifStore.getState().frames[0].id;
+      useGifStore.getState().updateFrameDuration(id, 1000);
+      useGifStore.getState().updateFrameDuration(id, undefined);
+      expect(useGifStore.getState().frames[0].duration).toBeUndefined();
+    });
+  });
+
   describe('generation state', () => {
     it('tracks generating state', () => {
       useGifStore.getState().setGenerating(true);

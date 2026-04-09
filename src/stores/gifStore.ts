@@ -68,6 +68,13 @@ export const useGifStore = create<GifState>((set) => ({
       },
     })),
 
+  updateFrameDuration: (frameId: string, duration: number | undefined) =>
+    set((state) => ({
+      frames: state.frames.map((f) =>
+        f.id === frameId ? { ...f, duration } : f
+      ),
+    })),
+
   setTheme: (theme: ThemeMode) =>
     set(() => {
       localStorage.setItem('gifmaker-theme', theme);

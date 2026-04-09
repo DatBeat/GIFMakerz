@@ -21,7 +21,8 @@ export default function GenerateButton() {
 
     try {
       const urls = frames.map((f) => f.url);
-      const result = await encodeGif(urls, settings, (p) => setProgress(p));
+      const frameDurations = frames.map((f) => f.duration);
+      const result = await encodeGif(urls, settings, (p) => setProgress(p), frameDurations);
       setGeneratedGif(result.blob, result.metadata);
     } catch (err) {
       console.error('GIF encoding failed:', err);

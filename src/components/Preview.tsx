@@ -47,7 +47,7 @@ export default function Preview() {
     if (isPlaying && frames.length > 1) {
       timerRef.current = setTimeout(() => {
         setCurrentFrame((prev) => (prev + 1) % frames.length);
-      }, settings.frameDuration);
+      }, frames[currentFrame]?.duration ?? settings.frameDuration);
     }
 
     return () => {
@@ -70,7 +70,7 @@ export default function Preview() {
     settings.colorCount
   );
 
-  const totalDuration = frames.length * settings.frameDuration;
+  const totalDuration = frames.reduce((sum, f) => sum + (f.duration ?? settings.frameDuration), 0);
 
   return (
     <div>
