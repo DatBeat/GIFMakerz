@@ -1,4 +1,6 @@
+import type { TextOverlay } from '../types';
 import { loadImage, drawImageToCanvas } from './imageUtils';
+import { drawAllTextOverlays } from './textRenderer';
 
 export interface TransitionConfig {
   type: 'crossfade' | 'slide';
@@ -7,6 +9,7 @@ export interface TransitionConfig {
   width: number;
   height: number;
   frameDurations?: (number | undefined)[];
+  frameTextOverlays?: (TextOverlay[] | undefined)[];
 }
 
 function generateCrossfadeFrames(
@@ -64,9 +67,14 @@ export async function buildFramesWithTransitions(
   const transitionFrameDelay = Math.round(duration / steps);
 
   const canvases: HTMLCanvasElement[] = [];
-  for (const url of imageUrls) {
-    const img = await loadImage(url);
-    canvases.push(drawImageToCanvas(img, width, height));
+  for (let i = 0; i < imageUrls.length; i++) {
+    const img = await loadImage(imageUrls[i]);
+    const canvas = drawImageToCanvas(img, width, height);
+    if (config.frameTextOverlays?.[i]) {
+      const ctx = canvas.getContext('2d')!;
+      drawAllTextOverlays(ctx, config.frameTextOverlays[i], width, height);
+    }
+    canvases.push(canvas);
   }
 
   const result: { canvas: HTMLCanvasElement; delay: number }[] = [];

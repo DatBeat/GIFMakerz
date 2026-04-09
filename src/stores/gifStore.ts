@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GifState, GifSettings, Preset, GifMetadata, ThemeMode } from '../types';
+import type { GifState, GifSettings, Preset, GifMetadata, ThemeMode, TextOverlay } from '../types';
 
 const defaultSettings: GifSettings = {
   frameDuration: 500,
@@ -72,6 +72,38 @@ export const useGifStore = create<GifState>((set) => ({
     set((state) => ({
       frames: state.frames.map((f) =>
         f.id === frameId ? { ...f, duration } : f
+      ),
+    })),
+
+  addTextOverlay: (frameId: string, overlay: TextOverlay) =>
+    set((state) => ({
+      frames: state.frames.map((f) =>
+        f.id === frameId
+          ? { ...f, textOverlays: [...(f.textOverlays || []), overlay] }
+          : f
+      ),
+    })),
+
+  removeTextOverlay: (frameId: string, overlayId: string) =>
+    set((state) => ({
+      frames: state.frames.map((f) =>
+        f.id === frameId
+          ? { ...f, textOverlays: (f.textOverlays || []).filter((o) => o.id !== overlayId) }
+          : f
+      ),
+    })),
+
+  updateTextOverlay: (frameId: string, overlayId: string, partial: Partial<TextOverlay>) =>
+    set((state) => ({
+      frames: state.frames.map((f) =>
+        f.id === frameId
+          ? {
+              ...f,
+              textOverlays: (f.textOverlays || []).map((o) =>
+                o.id === overlayId ? { ...o, ...partial } : o
+              ),
+            }
+          : f
       ),
     })),
 

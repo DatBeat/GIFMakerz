@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { useGifStore } from '../stores/gifStore';
 import { loadImage, computeHeight } from '../utils/imageUtils';
+import { drawAllTextOverlays } from '../utils/textRenderer';
 import { estimateWeight } from '../utils/weightEstimator';
 import SizeIndicator from './SizeIndicator';
 import PreviewControls from './PreviewControls';
@@ -35,6 +36,7 @@ export default function Preview() {
       const img = await loadImage(frames[index].url);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      drawAllTextOverlays(ctx, frames[index].textOverlays, canvas.width, canvas.height);
     },
     [frames, settings.outputWidth, canvasHeight]
   );

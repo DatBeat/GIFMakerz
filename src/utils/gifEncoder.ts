@@ -1,7 +1,8 @@
 // src/utils/gifEncoder.ts
 import GIF from 'gif.js';
-import type { GifSettings, GifMetadata } from '../types';
+import type { GifSettings, GifMetadata, TextOverlay } from '../types';
 import { loadImage, drawImageToCanvas, computeHeight } from './imageUtils';
+import { drawAllTextOverlays } from './textRenderer';
 import { buildFramesWithTransitions } from './transitions';
 
 function getRepeatValue(settings: GifSettings): number {
@@ -42,7 +43,8 @@ export async function encodeGif(
   imageUrls: string[],
   settings: GifSettings,
   onProgress: (progress: number) => void,
-  frameDurations?: (number | undefined)[]
+  frameDurations?: (number | undefined)[],
+  frameTextOverlays?: (TextOverlay[] | undefined)[]
 ): Promise<EncodeResult> {
   const firstImg = await loadImage(imageUrls[0]);
   const height = computeHeight(firstImg, settings.outputWidth, settings.outputHeight);
@@ -57,12 +59,17 @@ export async function encodeGif(
       width: settings.outputWidth,
       height,
       frameDurations,
+      frameTextOverlays,
     });
   } else {
     const canvases: { canvas: HTMLCanvasElement; delay: number }[] = [];
     for (let i = 0; i < imageUrls.length; i++) {
       const img = await loadImage(imageUrls[i]);
       const canvas = drawImageToCanvas(img, settings.outputWidth, height);
+      if (frameTextOverlays?.[i]) {
+        const ctx = canvas.getContext('2d')!;
+        drawAllTextOverlays(ctx, frameTextOverlays[i], settings.outputWidth, height);
+      }
       canvases.push({ canvas, delay: frameDurations?.[i] ?? settings.frameDuration });
     }
     frames = canvases;

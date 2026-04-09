@@ -5,6 +5,7 @@ export interface FrameImage {
   url: string;
   name: string;
   duration?: number;
+  textOverlays?: TextOverlay[];
 }
 
 export type Quality = 'low' | 'medium' | 'high';
@@ -44,6 +45,26 @@ export interface GifMetadata {
   totalDuration: number;
 }
 
+export interface TextOverlay {
+  id: string;
+  text: string;
+  fontSize: number;
+  fontFamily: string;
+  color: string;
+  backgroundColor: string;
+  position: 'top' | 'center' | 'bottom';
+  bold: boolean;
+}
+
+export interface Template {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  previewEmoji: string;
+  generate: (width: number, height: number) => Promise<File[]>;
+}
+
 export type ThemeMode = 'light' | 'dark' | 'system';
 
 export interface GifState {
@@ -64,6 +85,9 @@ export interface GifState {
   setProgress: (value: number) => void;
   setGeneratedGif: (blob: Blob | null, metadata: GifMetadata | null) => void;
   updateFrameDuration: (frameId: string, duration: number | undefined) => void;
+  addTextOverlay: (frameId: string, overlay: TextOverlay) => void;
+  removeTextOverlay: (frameId: string, overlayId: string) => void;
+  updateTextOverlay: (frameId: string, overlayId: string, partial: Partial<TextOverlay>) => void;
   setTheme: (theme: ThemeMode) => void;
   reset: () => void;
 }
