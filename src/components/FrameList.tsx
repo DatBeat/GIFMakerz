@@ -39,10 +39,10 @@ export default function FrameList() {
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-sm font-semibold text-gray-700">
+        <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-200">
           Frames ({frames.length})
         </h2>
-        <p className="text-xs text-gray-400">Glissez pour réorganiser</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500">Glissez pour réorganiser</p>
       </div>
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={frames.map((f) => f.id)} strategy={rectSortingStrategy}>

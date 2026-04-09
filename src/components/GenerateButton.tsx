@@ -38,7 +38,7 @@ export default function GenerateButton() {
         className={`w-full py-3 px-6 rounded-xl text-white font-semibold text-base transition-all ${
           canGenerate
             ? 'bg-blue-600 hover:bg-blue-700 active:scale-[0.98] shadow-md hover:shadow-lg'
-            : 'bg-gray-300 cursor-not-allowed'
+            : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed'
         }`}
       >
         {isGenerating ? 'Encodage en cours...' : 'Générer le GIF'}
@@ -46,13 +46,13 @@ export default function GenerateButton() {
 
       {isGenerating && (
         <div className="mt-3">
-          <div className="w-full bg-gray-200 rounded-full h-2.5">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
             <div
               className="bg-blue-600 h-2.5 rounded-full transition-all duration-200"
               style={{ width: `${Math.round(progress * 100)}%` }}
             />
           </div>
-          <p className="text-xs text-gray-500 mt-1 text-center">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 text-center">
             {Math.round(progress * 100)}%
           </p>
         </div>

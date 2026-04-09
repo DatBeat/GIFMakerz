@@ -9,24 +9,24 @@ export default function AdvancedSettings() {
   const updateSettings = useGifStore((s) => s.updateSettings);
 
   return (
-    <div className="border border-gray-200 rounded-lg">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-lg">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
       >
         <span>Paramètres avancés</span>
         <span className={`transform transition-transform ${isOpen ? 'rotate-90' : ''}`}>▸</span>
       </button>
 
       {isOpen && (
-        <div className="px-4 pb-4 space-y-4 border-t border-gray-200 pt-4">
+        <div className="px-4 pb-4 space-y-4 border-t border-gray-200 dark:border-gray-700 pt-4">
           {/* Transition */}
           <div>
-            <label className="text-sm text-gray-600 mb-1 block">Transition</label>
+            <label className="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Transition</label>
             <select
               value={settings.transition}
               onChange={(e) => updateSettings({ transition: e.target.value as Transition })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="none">Aucune</option>
               <option value="crossfade">Fondu (crossfade)</option>
@@ -37,9 +37,9 @@ export default function AdvancedSettings() {
           {/* Durée de transition - only shown if transition is not "none" */}
           {settings.transition !== 'none' && (
             <div>
-              <label className="flex items-center justify-between text-sm text-gray-600 mb-1">
+              <label className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 mb-1">
                 <span>Durée de transition</span>
-                <span className="font-mono text-gray-900">{settings.transitionDuration}ms</span>
+                <span className="font-mono text-gray-900 dark:text-gray-100">{settings.transitionDuration}ms</span>
               </label>
               <input
                 type="range"
@@ -55,7 +55,7 @@ export default function AdvancedSettings() {
 
           {/* Hauteur de sortie */}
           <div>
-            <label className="text-sm text-gray-600 mb-1 block">Hauteur de sortie</label>
+            <label className="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Hauteur de sortie</label>
             <div className="flex items-center gap-3">
               <label className="flex items-center gap-1.5 cursor-pointer">
                 <input
@@ -64,7 +64,7 @@ export default function AdvancedSettings() {
                   onChange={() => updateSettings({ outputHeight: 'auto' })}
                   className="accent-blue-600"
                 />
-                <span className="text-sm text-gray-700">Auto (conserve ratio)</span>
+                <span className="text-sm text-gray-700 dark:text-gray-200">Auto (conserve ratio)</span>
               </label>
               <label className="flex items-center gap-1.5 cursor-pointer">
                 <input
@@ -73,7 +73,7 @@ export default function AdvancedSettings() {
                   onChange={() => updateSettings({ outputHeight: 400 })}
                   className="accent-blue-600"
                 />
-                <span className="text-sm text-gray-700">Personnalisé</span>
+                <span className="text-sm text-gray-700 dark:text-gray-200">Personnalisé</span>
               </label>
             </div>
             {settings.outputHeight !== 'auto' && (
@@ -83,14 +83,14 @@ export default function AdvancedSettings() {
                 max={800}
                 value={settings.outputHeight}
                 onChange={(e) => updateSettings({ outputHeight: Number(e.target.value) })}
-                className="mt-2 w-24 border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-2 w-24 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             )}
           </div>
 
           {/* Poids max cible */}
           <div>
-            <label className="text-sm text-gray-600 mb-1 block">Poids max cible</label>
+            <label className="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Poids max cible</label>
             <select
               value={settings.maxFileSize === 'unlimited' ? 'unlimited' : settings.maxFileSize}
               onChange={(e) =>
@@ -98,7 +98,7 @@ export default function AdvancedSettings() {
                   maxFileSize: e.target.value === 'unlimited' ? 'unlimited' : Number(e.target.value),
                 })
               }
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value={250}>250 KB</option>
               <option value={500}>500 KB</option>
@@ -109,11 +109,11 @@ export default function AdvancedSettings() {
 
           {/* Dithering */}
           <div>
-            <label className="text-sm text-gray-600 mb-1 block">Dithering</label>
+            <label className="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Dithering</label>
             <select
               value={settings.dithering}
               onChange={(e) => updateSettings({ dithering: e.target.value as DitherMethod })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="none">Aucun</option>
               <option value="FloydSteinberg">Floyd-Steinberg</option>
@@ -123,11 +123,11 @@ export default function AdvancedSettings() {
 
           {/* Nombre de couleurs */}
           <div>
-            <label className="text-sm text-gray-600 mb-1 block">Nombre de couleurs</label>
+            <label className="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Nombre de couleurs</label>
             <select
               value={settings.colorCount}
               onChange={(e) => updateSettings({ colorCount: Number(e.target.value) })}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value={16}>16</option>
               <option value={32}>32</option>
@@ -139,9 +139,9 @@ export default function AdvancedSettings() {
 
           {/* Vitesse d'encodage */}
           <div>
-            <label className="flex items-center justify-between text-sm text-gray-600 mb-1">
+            <label className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 mb-1">
               <span>Vitesse d'encodage</span>
-              <span className="font-mono text-gray-900">{settings.encodingSpeed}</span>
+              <span className="font-mono text-gray-900 dark:text-gray-100">{settings.encodingSpeed}</span>
             </label>
             <input
               type="range"
@@ -152,7 +152,7 @@ export default function AdvancedSettings() {
               onChange={(e) => updateSettings({ encodingSpeed: Number(e.target.value) })}
               className="w-full accent-blue-600"
             />
-            <div className="flex justify-between text-xs text-gray-400">
+            <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500">
               <span>Meilleure qualité</span>
               <span>Plus rapide</span>
             </div>

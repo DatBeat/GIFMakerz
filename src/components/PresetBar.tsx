@@ -14,7 +14,7 @@ export default function PresetBar() {
 
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-700 mb-2">Preset rapide</h3>
+      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-2">Preset rapide</h3>
       <div className="flex flex-wrap gap-2">
         {presets.map((p) => (
           <button
@@ -23,7 +23,7 @@ export default function PresetBar() {
             className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               isActive(p)
                 ? 'bg-blue-600 text-white'
-                : 'bg-white border border-gray-200 text-gray-700 hover:border-blue-300 hover:text-blue-600'
+                : 'bg-white border border-gray-200 text-gray-700 hover:border-blue-300 hover:text-blue-600 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:hover:border-blue-400 dark:hover:text-blue-400'
             }`}
             title={p.description}
           >

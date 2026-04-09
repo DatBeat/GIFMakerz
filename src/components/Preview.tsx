@@ -74,9 +74,9 @@ export default function Preview() {
 
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-700 mb-3">Prévisualisation</h3>
+      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-3">Prévisualisation</h3>
       <div className="flex flex-col md:flex-row gap-4">
-        <div className="border border-gray-200 rounded-lg overflow-hidden bg-white inline-block">
+        <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden bg-white dark:bg-gray-800 inline-block">
           <canvas
             ref={canvasRef}
             className="block max-w-full h-auto"
@@ -84,10 +84,10 @@ export default function Preview() {
           />
         </div>
 
-        <div className="space-y-3 text-sm text-gray-600 min-w-[180px]">
+        <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400 min-w-[180px]">
           <div className="flex items-center justify-between">
             <span>Dimensions</span>
-            <span className="font-mono text-gray-900">{settings.outputWidth} &times; {canvasHeight}px</span>
+            <span className="font-mono text-gray-900 dark:text-gray-100">{settings.outputWidth} &times; {canvasHeight}px</span>
           </div>
           <div className="flex items-center justify-between">
             <span>Poids estimé</span>
@@ -95,11 +95,11 @@ export default function Preview() {
           </div>
           <div className="flex items-center justify-between">
             <span>Frames</span>
-            <span className="font-mono text-gray-900">{frames.length}</span>
+            <span className="font-mono text-gray-900 dark:text-gray-100">{frames.length}</span>
           </div>
           <div className="flex items-center justify-between">
             <span>Durée</span>
-            <span className="font-mono text-gray-900">{(totalDuration / 1000).toFixed(1)}s</span>
+            <span className="font-mono text-gray-900 dark:text-gray-100">{(totalDuration / 1000).toFixed(1)}s</span>
           </div>
         </div>
       </div>

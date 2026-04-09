@@ -29,24 +29,24 @@ export default function DownloadPanel() {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
-      <h3 className="font-semibold text-gray-900">GIF généré avec succès !</h3>
+    <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 space-y-4">
+      <h3 className="font-semibold text-gray-900 dark:text-gray-100">GIF généré avec succès !</h3>
 
       <div className="grid grid-cols-2 gap-3 text-sm">
-        <div className="text-gray-500">Poids</div>
+        <div className="text-gray-500 dark:text-gray-400">Poids</div>
         <div className={`font-mono font-medium ${sizeColors[sizeCategory]}`}>
           {formatSize(metadata.size)}
         </div>
-        <div className="text-gray-500">Dimensions</div>
-        <div className="font-mono">{metadata.width} × {metadata.height}px</div>
-        <div className="text-gray-500">Frames</div>
-        <div className="font-mono">{metadata.frameCount}</div>
-        <div className="text-gray-500">Durée totale</div>
-        <div className="font-mono">{(metadata.totalDuration / 1000).toFixed(1)}s</div>
+        <div className="text-gray-500 dark:text-gray-400">Dimensions</div>
+        <div className="font-mono dark:text-gray-200">{metadata.width} × {metadata.height}px</div>
+        <div className="text-gray-500 dark:text-gray-400">Frames</div>
+        <div className="font-mono dark:text-gray-200">{metadata.frameCount}</div>
+        <div className="text-gray-500 dark:text-gray-400">Durée totale</div>
+        <div className="font-mono dark:text-gray-200">{(metadata.totalDuration / 1000).toFixed(1)}s</div>
       </div>
 
       {isOverweight && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
+        <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-700 dark:text-red-300">
           <strong>⚠ Attention :</strong> Ce GIF dépasse 1 MB. Certains clients email (Gmail, Outlook)
           pourraient ne pas l'afficher correctement. Réduisez la qualité, les dimensions ou le nombre
           de frames pour un meilleur résultat.

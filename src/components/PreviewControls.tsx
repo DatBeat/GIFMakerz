@@ -20,7 +20,7 @@ export default function PreviewControls({
       <button
         onClick={onPrevFrame}
         disabled={isPlaying}
-        className="px-2 py-1 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+        className="px-2 py-1 text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-40"
         title="Frame précédente"
       >
         &#9668;
@@ -34,12 +34,12 @@ export default function PreviewControls({
       <button
         onClick={onNextFrame}
         disabled={isPlaying}
-        className="px-2 py-1 text-sm bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-40"
+        className="px-2 py-1 text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-40"
         title="Frame suivante"
       >
         &#9658;
       </button>
-      <span className="text-xs text-gray-500 ml-2">
+      <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
         {currentFrame + 1} / {totalFrames}
       </span>
     </div>

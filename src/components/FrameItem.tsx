@@ -23,7 +23,7 @@ export default function FrameItem({ frame, index, onRemove }: Props) {
     <div
       ref={setNodeRef}
       style={style}
-      className="relative group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm"
+      className="relative group bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm"
     >
       <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing">
         <img
@@ -47,7 +47,7 @@ export default function FrameItem({ frame, index, onRemove }: Props) {
       >
         ×
       </button>
-      <div className="px-2 py-1 text-xs text-gray-500 truncate">{frame.name}</div>
+      <div className="px-2 py-1 text-xs text-gray-500 dark:text-gray-400 truncate">{frame.name}</div>
     </div>
   );
 }

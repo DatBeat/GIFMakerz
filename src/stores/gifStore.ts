@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GifState, GifSettings, Preset, GifMetadata } from '../types';
+import type { GifState, GifSettings, Preset, GifMetadata, ThemeMode } from '../types';
 
 const defaultSettings: GifSettings = {
   frameDuration: 500,
@@ -23,6 +23,7 @@ export const useGifStore = create<GifState>((set) => ({
   progress: 0,
   generatedGif: null,
   generatedMetadata: null,
+  theme: (localStorage.getItem('gifmaker-theme') as ThemeMode) || 'system',
 
   addFrames: (files: File[]) =>
     set((state) => {
@@ -66,6 +67,12 @@ export const useGifStore = create<GifState>((set) => ({
         maxFileSize: preset.maxFileSize,
       },
     })),
+
+  setTheme: (theme: ThemeMode) =>
+    set(() => {
+      localStorage.setItem('gifmaker-theme', theme);
+      return { theme };
+    }),
 
   setGenerating: (value: boolean) => set({ isGenerating: value }),
   setProgress: (value: number) => set({ progress: value }),

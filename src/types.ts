@@ -43,6 +43,8 @@ export interface GifMetadata {
   totalDuration: number;
 }
 
+export type ThemeMode = 'light' | 'dark' | 'system';
+
 export interface GifState {
   frames: FrameImage[];
   settings: GifSettings;
@@ -50,6 +52,7 @@ export interface GifState {
   progress: number;
   generatedGif: Blob | null;
   generatedMetadata: GifMetadata | null;
+  theme: ThemeMode;
 
   addFrames: (files: File[]) => void;
   removeFrame: (id: string) => void;
@@ -59,5 +62,6 @@ export interface GifState {
   setGenerating: (value: boolean) => void;
   setProgress: (value: number) => void;
   setGeneratedGif: (blob: Blob | null, metadata: GifMetadata | null) => void;
+  setTheme: (theme: ThemeMode) => void;
   reset: () => void;
 }
