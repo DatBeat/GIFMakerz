@@ -11,6 +11,9 @@ import Preview from './components/Preview';
 import GenerateButton from './components/GenerateButton';
 import DownloadPanel from './components/DownloadPanel';
 import SmartOptimizer from './components/SmartOptimizer';
+import VideoImporter from './components/VideoImporter';
+import TextOverlayEditor from './components/TextOverlayEditor';
+import TemplateGallery from './components/TemplateGallery';
 
 export default function App() {
   useTheme();
@@ -21,10 +24,14 @@ export default function App() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-        {/* Upload */}
-        <section>
+        {/* Upload & Video Import */}
+        <section className="space-y-4">
           <ImageUploader />
+          <VideoImporter />
         </section>
+
+        {/* Templates */}
+        <TemplateGallery />
 
         {/* Frames */}
         <FrameList />
@@ -38,6 +45,11 @@ export default function App() {
               <hr className="border-gray-100 dark:border-gray-700" />
               <SettingsPanel />
               <AdvancedSettings />
+            </section>
+
+            {/* Text Overlay */}
+            <section className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+              <TextOverlayEditor />
             </section>
 
             {/* Preview */}
