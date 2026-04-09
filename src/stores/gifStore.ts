@@ -1,0 +1,87 @@
+import { create } from 'zustand';
+import type { GifState, GifSettings, Preset, GifMetadata } from '../types';
+
+const defaultSettings: GifSettings = {
+  frameDuration: 500,
+  outputWidth: 600,
+  quality: 'medium',
+  loop: 'infinite',
+  customLoopCount: 1,
+  transition: 'none',
+  transitionDuration: 300,
+  outputHeight: 'auto',
+  maxFileSize: 500,
+  dithering: 'FloydSteinberg',
+  colorCount: 128,
+  encodingSpeed: 5,
+};
+
+export const useGifStore = create<GifState>((set) => ({
+  frames: [],
+  settings: { ...defaultSettings },
+  isGenerating: false,
+  progress: 0,
+  generatedGif: null,
+  generatedMetadata: null,
+
+  addFrames: (files: File[]) =>
+    set((state) => {
+      const remaining = 20 - state.frames.length;
+      if (remaining <= 0) return state;
+      const newFrames = files.slice(0, remaining).map((file) => ({
+        id: crypto.randomUUID(),
+        file,
+        url: URL.createObjectURL(file),
+        name: file.name,
+      }));
+      return { frames: [...state.frames, ...newFrames] };
+    }),
+
+  removeFrame: (id: string) =>
+    set((state) => {
+      const frame = state.frames.find((f) => f.id === id);
+      if (frame) URL.revokeObjectURL(frame.url);
+      return { frames: state.frames.filter((f) => f.id !== id) };
+    }),
+
+  reorderFrames: (oldIndex: number, newIndex: number) =>
+    set((state) => {
+      const frames = [...state.frames];
+      const [moved] = frames.splice(oldIndex, 1);
+      frames.splice(newIndex, 0, moved);
+      return { frames };
+    }),
+
+  updateSettings: (partial: Partial<GifSettings>) =>
+    set((state) => ({
+      settings: { ...state.settings, ...partial },
+    })),
+
+  applyPreset: (preset: Preset) =>
+    set((state) => ({
+      settings: {
+        ...state.settings,
+        outputWidth: preset.width,
+        quality: preset.quality,
+        maxFileSize: preset.maxFileSize,
+      },
+    })),
+
+  setGenerating: (value: boolean) => set({ isGenerating: value }),
+  setProgress: (value: number) => set({ progress: value }),
+  setGeneratedGif: (blob: Blob | null, metadata: GifMetadata | null) =>
+    set({ generatedGif: blob, generatedMetadata: metadata }),
+
+  reset: () =>
+    set((state) => {
+      state.frames.forEach((f) => URL.revokeObjectURL(f.url));
+      return {
+        frames: [],
+        settings: { ...defaultSettings },
+        isGenerating: false,
+        progress: 0,
+        generatedGif: null,
+        generatedMetadata: null,
+      };
+    }),
+}));
