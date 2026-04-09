@@ -4,3 +4,15 @@ body {
   margin: 0;
   min-height: 100vh;
 }
+
+/* Smooth range input styling */
+input[type="range"] {
+  height: 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Canvas responsive */
+canvas {
+  image-rendering: auto;
+}
