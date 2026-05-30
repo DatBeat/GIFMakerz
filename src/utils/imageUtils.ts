@@ -77,8 +77,10 @@ export function drawImageWithFit(
       ctx.drawImage(img, cover.dx - 20, cover.dy - 20, cover.dWidth + 40, cover.dHeight + 40);
       ctx.restore();
     } else {
+      ctx.save();
       ctx.fillStyle = (background?.type === 'color' ? background.color : null) ?? '#ffffff';
       ctx.fillRect(0, 0, width, height);
+      ctx.restore();
     }
   }
 
