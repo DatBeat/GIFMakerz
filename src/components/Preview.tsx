@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { useGifStore } from '../stores/gifStore';
-import { loadImage, computeHeight, drawImageToCanvas } from '../utils/imageUtils';
+import { loadImage, computeHeight, drawImageToFitCanvas } from '../utils/imageUtils';
 import { drawAllTextOverlays } from '../utils/textRenderer';
 import { buildFramesWithTransitions } from '../utils/transitions';
 import { estimateWeight } from '../utils/weightEstimator';
@@ -60,12 +60,19 @@ export default function Preview() {
           height: canvasHeight,
           frameDurations: durations,
           frameTextOverlays: overlays,
+          frameFits: frames.map((f) => ({ fit: f.fit, transform: f.transform, background: f.background })),
         });
       } else {
         result = [];
         for (let i = 0; i < urls.length; i++) {
           const img = await loadImage(urls[i]);
-          const canvas = drawImageToCanvas(img, settings.outputWidth, canvasHeight);
+          const canvas = drawImageToFitCanvas(img, {
+            fit: frames[i].fit,
+            transform: frames[i].transform,
+            background: frames[i].background,
+            width: settings.outputWidth,
+            height: canvasHeight,
+          });
           if (overlays[i]) {
             const ctx = canvas.getContext('2d')!;
             drawAllTextOverlays(ctx, overlays[i], settings.outputWidth, canvasHeight);
