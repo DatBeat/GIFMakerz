@@ -6,8 +6,10 @@
 ## This Week
 - [ ] User testing in real email clients (Outlook, Gmail, Apple Mail)
 - [ ] Performance benchmark: encoding < 5s for 10 frames at 600px
-- [x] Replace gif.js with modern encoders — gifenc (Fast) + gifski (Quality), pluggable, toggle (053026, branch feat/modern-gif-encoder)
-- [ ] Manual browser validation of new encoders: Fast vs Quality size/quality on 10-frame @600px (dev server crashed mid-session, not yet done)
+- [x] Replace gif.js with modern encoders — gifenc (Fast) + gifski (Quality), pluggable, toggle (053026)
+- [x] Browser-validated new encoders: countdown 6f@600px → Fast 11KB / Quality 16KB (gifski wins on photo content, not flat colors) (053026)
+- [x] weightEstimator/optimizer encoder-aware — estimate reacts to encoder toggle, optimizer skips color-reduction for Quality (053026)
+- [x] Animate transitions in the preview (crossfade/slide rendered, source-frame counter, accurate duration) (053026)
 
 ## Backlog
 - [ ] Undo/redo
@@ -18,7 +20,6 @@
 - [ ] Mode batch (multi-GIF generation)
 - [ ] Frame duplication
 - [ ] Reverse/ping-pong animation
-- [ ] weightEstimator/optimizer encoder-aware: colorCount estimate + "reduce colors" suggestion only valid for Fast (gifenc); inert for Quality (gifski uses own quality score) — key off settings.encoder
 
 ## Done
 - [x] Setup projet Vite + React + TS + Tailwind (040926)
