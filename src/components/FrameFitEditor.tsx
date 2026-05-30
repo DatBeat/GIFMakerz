@@ -19,6 +19,7 @@ const DISPLAY_W = 460;
 
 export default function FrameFitEditor({ frame, onClose }: Props) {
   const settings = useGifStore((s) => s.settings);
+  const firstFrameUrl = useGifStore((s) => s.frames[0]?.url);
   const updateFrameFit = useGifStore((s) => s.updateFrameFit);
   const applyFitToAll = useGifStore((s) => s.applyFitToAll);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -39,12 +40,22 @@ export default function FrameFitEditor({ frame, onClose }: Props) {
 
   useEffect(() => {
     setImageLoaded(false);
-    loadImage(frame.url).then((img) => {
-      imgRef.current = img;
-      setOutH(computeHeight(img, settings.outputWidth, settings.outputHeight));
-      setImageLoaded(true); // forces a re-render even if outH is unchanged
-    });
-  }, [frame.url, settings.outputWidth, settings.outputHeight]);
+    let cancelled = false;
+    // Draw the edited frame's image, but size the box by the OUTPUT height the
+    // pipeline uses — which (for outputHeight 'auto') derives from the FIRST
+    // frame, applied to every frame. This keeps the editor preview == output.
+    Promise.all([loadImage(frame.url), loadImage(firstFrameUrl ?? frame.url)]).then(
+      ([img, firstImg]) => {
+        if (cancelled) return;
+        imgRef.current = img;
+        setOutH(computeHeight(firstImg, settings.outputWidth, settings.outputHeight));
+        setImageLoaded(true); // forces a re-render even if outH is unchanged
+      }
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [frame.url, firstFrameUrl, settings.outputWidth, settings.outputHeight]);
 
   // Re-render the editor canvas whenever the fit state (or the loaded image) changes.
   useEffect(() => {
