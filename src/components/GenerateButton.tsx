@@ -1,8 +1,10 @@
 // src/components/GenerateButton.tsx
+import { useState } from 'react';
 import { useGifStore } from '../stores/gifStore';
 import { encodeGif } from '../utils/gifEncoder';
 
 export default function GenerateButton() {
+  const [error, setError] = useState<string | null>(null);
   const frames = useGifStore((s) => s.frames);
   const settings = useGifStore((s) => s.settings);
   const isGenerating = useGifStore((s) => s.isGenerating);
@@ -15,6 +17,7 @@ export default function GenerateButton() {
 
   async function handleGenerate() {
     if (!canGenerate) return;
+    setError(null);
     setGenerating(true);
     setProgress(0);
     setGeneratedGif(null, null);
@@ -27,6 +30,7 @@ export default function GenerateButton() {
       setGeneratedGif(result.blob, result.metadata);
     } catch (err) {
       console.error('GIF encoding failed:', err);
+      setError(err instanceof Error ? err.message : "Échec de l'encodage du GIF.");
     } finally {
       setGenerating(false);
     }
@@ -63,6 +67,12 @@ export default function GenerateButton() {
       {frames.length < 2 && frames.length > 0 && (
         <p className="text-xs text-amber-600 mt-2 text-center">
           Ajoutez au moins 2 images pour générer un GIF
+        </p>
+      )}
+
+      {error && !isGenerating && (
+        <p className="text-xs text-red-600 dark:text-red-400 mt-2 text-center" role="alert">
+          {error}
         </p>
       )}
     </div>

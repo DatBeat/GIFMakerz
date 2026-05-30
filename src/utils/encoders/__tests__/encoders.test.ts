@@ -5,6 +5,7 @@ vi.mock('gifski-wasm', () => ({ default: vi.fn() }));
 
 import { encoders } from '../index';
 import { fastEncoder } from '../gifenc';
+import { qualityEncoder } from '../gifski';
 import type { FrameData, EncodeOpts } from '../index';
 
 describe('encoder registry', () => {
@@ -49,5 +50,16 @@ describe('fastEncoder (gifenc)', () => {
     expect(String.fromCharCode(...Array.from(bytes.slice(0, 6)))).toBe('GIF89a');
 
     expect(onProgress).toHaveBeenCalledWith(1);
+  });
+});
+
+describe('qualityEncoder (gifski)', () => {
+  it('rejects with a clear message when given fewer than 2 frames', async () => {
+    const onProgress = vi.fn();
+    await expect(
+      qualityEncoder.encode([makeFrame(2, 2, 100)], opts, onProgress)
+    ).rejects.toThrow(/au moins 2 images/);
+    // Guard short-circuits before any progress or WASM call.
+    expect(onProgress).not.toHaveBeenCalled();
   });
 });
