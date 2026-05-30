@@ -31,18 +31,22 @@ export default function FrameFitEditor({ frame, onClose }: Props) {
   );
   const [background, setBackground] = useState(frame.background ?? { type: 'color' as const, color: '#ffffff' });
   const [outH, setOutH] = useState(400);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Display canvas keeps the output aspect ratio.
   const displayH = Math.round((outH / settings.outputWidth) * DISPLAY_W);
+  const isManual = fit === 'cover' || fit === 'custom';
 
   useEffect(() => {
+    setImageLoaded(false);
     loadImage(frame.url).then((img) => {
       imgRef.current = img;
       setOutH(computeHeight(img, settings.outputWidth, settings.outputHeight));
+      setImageLoaded(true); // forces a re-render even if outH is unchanged
     });
   }, [frame.url, settings.outputWidth, settings.outputHeight]);
 
-  // Re-render the editor canvas whenever the fit state changes.
+  // Re-render the editor canvas whenever the fit state (or the loaded image) changes.
   useEffect(() => {
     const canvas = canvasRef.current;
     const img = imgRef.current;
@@ -51,9 +55,25 @@ export default function FrameFitEditor({ frame, onClose }: Props) {
     canvas.height = displayH;
     const ctx = canvas.getContext('2d')!;
     drawImageWithFit(ctx, img, { fit, transform, background, width: DISPLAY_W, height: displayH });
-  }, [fit, transform, background, displayH]);
+  }, [fit, transform, background, displayH, imageLoaded]);
 
-  const isManual = fit === 'cover' || fit === 'custom';
+  // Non-passive wheel listener so zoom can preventDefault page scroll
+  // (React's synthetic onWheel is passive since v17 → preventDefault is a no-op).
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const handler = (e: WheelEvent) => {
+      if (!isManual) return;
+      e.preventDefault();
+      setFit('custom');
+      setTransform((t) => ({
+        ...t,
+        scale: Math.max(1, Math.min(5, t.scale - e.deltaY * 0.001)),
+      }));
+    };
+    canvas.addEventListener('wheel', handler, { passive: false });
+    return () => canvas.removeEventListener('wheel', handler);
+  }, [isManual, displayH]);
 
   function selectPreset(mode: FitMode) {
     setFit(mode);
@@ -79,14 +99,6 @@ export default function FrameFitEditor({ frame, onClose }: Props) {
   }
   function onPointerUp() {
     dragRef.current = null;
-  }
-  function onWheel(e: React.WheelEvent) {
-    if (!isManual) return;
-    setFit('custom');
-    setTransform((t) => ({
-      ...t,
-      scale: Math.max(1, Math.min(5, t.scale - e.deltaY * 0.001)),
-    }));
   }
 
   function save() {
@@ -116,7 +128,7 @@ export default function FrameFitEditor({ frame, onClose }: Props) {
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
-          onWheel={onWheel}
+          onPointerCancel={onPointerUp}
         />
         {isManual && (
           <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 text-center">
