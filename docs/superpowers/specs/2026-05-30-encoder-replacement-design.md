@@ -13,7 +13,9 @@ L'app produit des GIFs animés à partir d'images, pour l'email marketing. L'enc
 Architecture **encodeur pluggable** avec **deux** encodeurs :
 
 1. **Fast (gifenc)** — moderne, léger (~Ko), rapide. Mode preview / itération.
-2. **Quality (gifski via gifski-wasm)** — meilleur ratio qualité/poids du marché (palettes par-frame, dithering haute qualité, optimisation temporelle). Mode livrable email final, **défaut**.
+2. **Quality (gifski via gifski-wasm)** — meilleur ratio qualité/poids du marché (palettes par-frame, dithering haute qualité, optimisation temporelle). Mode livrable email final.
+
+Défaut = **Fast**, pour que le premier encodage soit rapide et que l'app paraisse réactive au premier essai. L'utilisateur bascule sur Quality pour le livrable final via le toggle.
 
 gif.js est **supprimé entièrement** : dépendance npm, `public/gif.worker.js`, `src/gif.js.d.ts`. Pas de mode "legacy".
 
@@ -90,7 +92,7 @@ Le reste de l'app (`GenerateButton`, store zustand, `DownloadPanel`) ne change p
 
 ## Types & UI
 
-- `GifSettings.encoder: 'fast' | 'quality'`, défaut `'quality'`.
+- `GifSettings.encoder: 'fast' | 'quality'`, défaut `'fast'`.
 - Toggle dans le panneau settings : « Rapide (preview) » / « Qualité max (email) ».
 - Mapping des paramètres existants :
   - gifenc : `colorCount` → nombre de couleurs ; `quality`/`dithering`/`encodingSpeed` → options de quantification.
