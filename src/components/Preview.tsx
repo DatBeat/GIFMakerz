@@ -13,7 +13,7 @@ export default function Preview() {
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentFrame, setCurrentFrame] = useState(0);
   const [canvasHeight, setCanvasHeight] = useState(400);
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   // Compute display height from first image
   useEffect(() => {

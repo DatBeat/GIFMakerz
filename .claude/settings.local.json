@@ -2,7 +2,40 @@
   "permissions": {
     "allow": [
       "Bash(npm init:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "mcp__chrome-devtools__take_screenshot",
+      "Bash(npm run:*)",
+      "mcp__claude_ai_Vercel__check_domain_availability_and_price",
+      "mcp__claude_ai_Vercel__deploy_to_vercel",
+      "mcp__claude_ai_Vercel__list_teams",
+      "mcp__claude_ai_Vercel__list_projects",
+      "mcp__plugin_github_github__get_me",
+      "mcp__plugin_github_github__create_repository",
+      "Bash(git remote:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout *)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(npm uninstall *)",
+      "Bash(npm test *)",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Cursor\\\\GIFMakerz\\\\src\\\\utils\\\\encoders\\\\__tests__\")",
+      "Bash(Out-Null)",
+      "Bash(Write-Output \"dirs created\")",
+      "PowerShell(New-Item *)",
+      "Bash(Select-String -Pattern \"Tests|passed|failed|FAIL|GIF\")",
+      "Bash(Select-Object -First 20)",
+      "Bash(Get-Content \"C:\\\\Cursor\\\\GIFMakerz\\\\node_modules\\\\gifski-wasm\\\\package.json\")",
+      "Bash(Select-String -Pattern \"types|typings|main|module\")",
+      "Bash(Select-String \"gifski\")",
+      "Bash(Test-Path \"public/gif.worker.js\")",
+      "Bash(Test-Path \"src/gif.js.d.ts\")",
+      "Bash(git rm *)",
+      "Bash(Test-Path \"C:\\\\Cursor\\\\GIFMakerz\\\\public\\\\gif.worker.js\")",
+      "Bash(Test-Path \"C:\\\\Cursor\\\\GIFMakerz\\\\src\\\\gif.js.d.ts\")",
+      "Bash(git grep *)",
+      "Bash(git rev-list *)",
+      "Bash(git fetch *)",
+      "Bash(git merge *)"
     ]
   }
 }
