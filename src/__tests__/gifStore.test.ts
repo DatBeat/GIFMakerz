@@ -69,6 +69,7 @@ describe('gifStore', () => {
       expect(s.dithering).toBe('FloydSteinberg');
       expect(s.colorCount).toBe(128);
       expect(s.encodingSpeed).toBe(5);
+      expect(s.encoder).toBe('fast');
     });
 
     it('updates partial settings', () => {

@@ -12,6 +12,7 @@ export type Quality = 'low' | 'medium' | 'high';
 export type Transition = 'none' | 'crossfade' | 'slide';
 export type DitherMethod = 'none' | 'FloydSteinberg' | 'ordered';
 export type LoopMode = 'infinite' | '1' | '2' | '3' | 'custom';
+export type EncoderId = 'fast' | 'quality';
 
 export interface GifSettings {
   frameDuration: number;
@@ -26,6 +27,7 @@ export interface GifSettings {
   dithering: DitherMethod;
   colorCount: number;
   encodingSpeed: number;
+  encoder: EncoderId;
 }
 
 export interface Preset {

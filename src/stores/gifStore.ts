@@ -14,6 +14,7 @@ const defaultSettings: GifSettings = {
   dithering: 'FloydSteinberg',
   colorCount: 128,
   encodingSpeed: 5,
+  encoder: 'fast',
 };
 
 export const useGifStore = create<GifState>((set) => ({
