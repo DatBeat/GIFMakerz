@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { FrameImage } from '../types';
 import FrameDurationSlider from './FrameDurationSlider';
+import FrameFitEditor from './FrameFitEditor';
 
 interface Props {
   frame: FrameImage;
@@ -20,6 +22,10 @@ export default function FrameItem({ frame, index, onRemove }: Props) {
     opacity: isDragging ? 0.5 : 1,
   };
 
+  const [editing, setEditing] = useState(false);
+  const objectFit =
+    frame.fit === 'contain' ? 'contain' : frame.fit === 'fill' ? 'fill' : 'cover';
+
   return (
     <div
       ref={setNodeRef}
@@ -30,7 +36,8 @@ export default function FrameItem({ frame, index, onRemove }: Props) {
         <img
           src={frame.url}
           alt={frame.name}
-          className="w-full h-20 object-cover"
+          className="w-full h-20"
+          style={{ objectFit }}
         />
         <div className="absolute top-1 left-1 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded">
           {index + 1}
@@ -48,10 +55,18 @@ export default function FrameItem({ frame, index, onRemove }: Props) {
       >
         ×
       </button>
+      <button
+        onClick={() => setEditing(true)}
+        className="absolute bottom-7 right-1 bg-black/60 text-white rounded px-1.5 py-0.5 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+        title="Cadrer l'image"
+      >
+        ✎ cadrer
+      </button>
       <div className="px-1 py-0.5">
         <div className="text-[10px] text-gray-500 dark:text-gray-400 truncate px-0.5">{frame.name}</div>
         <FrameDurationSlider frameId={frame.id} duration={frame.duration} />
       </div>
+      {editing && <FrameFitEditor frame={frame} onClose={() => setEditing(false)} />}
     </div>
   );
 }
