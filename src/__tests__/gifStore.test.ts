@@ -113,6 +113,29 @@ describe('gifStore', () => {
     });
   });
 
+  describe('per-frame fit', () => {
+    it('new frames default to cover', () => {
+      useGifStore.getState().addFrames([createMockFile('a.png')]);
+      expect(useGifStore.getState().frames[0].fit).toBe('cover');
+    });
+
+    it('updates a single frame fit', () => {
+      useGifStore.getState().addFrames([createMockFile('a.png'), createMockFile('b.png')]);
+      const id = useGifStore.getState().frames[0].id;
+      useGifStore.getState().updateFrameFit(id, { fit: 'contain', background: { type: 'blur' } });
+      const f = useGifStore.getState().frames[0];
+      expect(f.fit).toBe('contain');
+      expect(f.background).toEqual({ type: 'blur' });
+      expect(useGifStore.getState().frames[1].fit).toBe('cover');
+    });
+
+    it('applies a fit to all frames', () => {
+      useGifStore.getState().addFrames([createMockFile('a.png'), createMockFile('b.png')]);
+      useGifStore.getState().applyFitToAll({ fit: 'fill' });
+      expect(useGifStore.getState().frames.every((f) => f.fit === 'fill')).toBe(true);
+    });
+  });
+
   describe('generation state', () => {
     it('tracks generating state', () => {
       useGifStore.getState().setGenerating(true);

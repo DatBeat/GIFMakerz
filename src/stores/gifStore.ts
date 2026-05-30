@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GifState, GifSettings, Preset, GifMetadata, ThemeMode, TextOverlay } from '../types';
+import type { GifState, GifSettings, Preset, GifMetadata, ThemeMode, TextOverlay, FrameFit } from '../types';
 
 const defaultSettings: GifSettings = {
   frameDuration: 500,
@@ -35,6 +35,7 @@ export const useGifStore = create<GifState>((set) => ({
         file,
         url: URL.createObjectURL(file),
         name: file.name,
+        fit: 'cover' as const,
       }));
       return { frames: [...state.frames, ...newFrames] };
     }),
@@ -74,6 +75,18 @@ export const useGifStore = create<GifState>((set) => ({
       frames: state.frames.map((f) =>
         f.id === frameId ? { ...f, duration } : f
       ),
+    })),
+
+  updateFrameFit: (frameId: string, partial: Partial<FrameFit>) =>
+    set((state) => ({
+      frames: state.frames.map((f) =>
+        f.id === frameId ? { ...f, ...partial } : f
+      ),
+    })),
+
+  applyFitToAll: (fitState: FrameFit) =>
+    set((state) => ({
+      frames: state.frames.map((f) => ({ ...f, ...fitState })),
     })),
 
   addTextOverlay: (frameId: string, overlay: TextOverlay) =>

@@ -6,11 +6,32 @@ export interface FrameImage {
   name: string;
   duration?: number;
   textOverlays?: TextOverlay[];
+  fit: FitMode;
+  transform?: FrameTransform;
+  background?: FrameBackground;
 }
 
 export type Quality = 'low' | 'medium' | 'high';
 export type Transition = 'none' | 'crossfade' | 'slide';
 export type DitherMethod = 'none' | 'FloydSteinberg' | 'ordered';
+
+export type FitMode = 'fill' | 'contain' | 'cover' | 'tile' | 'custom';
+
+export interface FrameTransform {
+  scale: number;   // multiplier on the base "cover" scale (>= 1 = zoom in), default 1
+  offsetX: number; // normalized pan [-1..1], 0 = centered
+  offsetY: number; // normalized pan [-1..1], 0 = centered
+}
+
+export type FrameBackground =
+  | { type: 'color'; color: string }
+  | { type: 'blur' };
+
+export interface FrameFit {
+  fit: FitMode;
+  transform?: FrameTransform;
+  background?: FrameBackground;
+}
 export type LoopMode = 'infinite' | '1' | '2' | '3' | 'custom';
 export type EncoderId = 'fast' | 'quality';
 
@@ -87,6 +108,8 @@ export interface GifState {
   setProgress: (value: number) => void;
   setGeneratedGif: (blob: Blob | null, metadata: GifMetadata | null) => void;
   updateFrameDuration: (frameId: string, duration: number | undefined) => void;
+  updateFrameFit: (frameId: string, partial: Partial<FrameFit>) => void;
+  applyFitToAll: (fitState: FrameFit) => void;
   addTextOverlay: (frameId: string, overlay: TextOverlay) => void;
   removeTextOverlay: (frameId: string, overlayId: string) => void;
   updateTextOverlay: (frameId: string, overlayId: string, partial: Partial<TextOverlay>) => void;
