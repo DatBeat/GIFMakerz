@@ -95,8 +95,9 @@ Le reste de l'app (`GenerateButton`, store zustand, `DownloadPanel`) ne change p
 - `GifSettings.encoder: 'fast' | 'quality'`, défaut `'fast'`.
 - Toggle dans le panneau settings : « Rapide (preview) » / « Qualité max (email) ».
 - Mapping des paramètres existants :
-  - gifenc : `colorCount` → nombre de couleurs ; `quality`/`dithering`/`encodingSpeed` → options de quantification.
-  - gifski : `quality` → score gifski (1-100).
+  - gifenc : `colorCount` → nombre de couleurs de la palette (par-frame). gifenc n'expose **ni dithering ni param de vitesse** → les réglages `dithering` et `encodingSpeed` deviennent inertes.
+  - gifski : `quality` → score gifski (1-100). Dithering géré nativement et automatiquement par gifski.
+- Conséquence UI : les contrôles « Dithering » et « Vitesse d'encodage » sont **retirés** du panneau (aucun encodeur ne les consomme). `colorCount` est conservé (utilisé par le mode Fast). Les champs `dithering`/`encodingSpeed` restent dans `GifSettings` (inertes) pour éviter de churner store + tests ; nettoyage possible ultérieur.
 - `maxFileSize` : si dépassé en mode qualité, afficher une suggestion (baisser `colorCount` ou `quality`). Pas de réencodage automatique récursif (YAGNI).
 
 ## Progress & async
