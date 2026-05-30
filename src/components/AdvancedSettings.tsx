@@ -1,7 +1,7 @@
 // src/components/AdvancedSettings.tsx
 import { useState } from 'react';
 import { useGifStore } from '../stores/gifStore';
-import type { Transition, DitherMethod } from '../types';
+import type { Transition, EncoderId } from '../types';
 
 export default function AdvancedSettings() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +20,21 @@ export default function AdvancedSettings() {
 
       {isOpen && (
         <div className="px-4 pb-4 space-y-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+          {/* Encodeur */}
+          <div>
+            <label className="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Encodeur</label>
+            <select
+              value={settings.encoder}
+              onChange={(e) => updateSettings({ encoder: e.target.value as EncoderId })}
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="fast">Rapide (preview)</option>
+              <option value="quality">Qualité max (email)</option>
+            </select>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+              Qualité max = GIF plus léger et plus net, encodage plus lent.
+            </p>
+          </div>
           {/* Transition */}
           <div>
             <label className="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Transition</label>
@@ -107,20 +122,6 @@ export default function AdvancedSettings() {
             </select>
           </div>
 
-          {/* Dithering */}
-          <div>
-            <label className="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Dithering</label>
-            <select
-              value={settings.dithering}
-              onChange={(e) => updateSettings({ dithering: e.target.value as DitherMethod })}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="none">Aucun</option>
-              <option value="FloydSteinberg">Floyd-Steinberg</option>
-              <option value="ordered">Ordered</option>
-            </select>
-          </div>
-
           {/* Nombre de couleurs */}
           <div>
             <label className="text-sm text-gray-600 dark:text-gray-300 mb-1 block">Nombre de couleurs</label>
@@ -137,26 +138,6 @@ export default function AdvancedSettings() {
             </select>
           </div>
 
-          {/* Vitesse d'encodage */}
-          <div>
-            <label className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 mb-1">
-              <span>Vitesse d'encodage</span>
-              <span className="font-mono text-gray-900 dark:text-gray-100">{settings.encodingSpeed}</span>
-            </label>
-            <input
-              type="range"
-              min={1}
-              max={10}
-              step={1}
-              value={settings.encodingSpeed}
-              onChange={(e) => updateSettings({ encodingSpeed: Number(e.target.value) })}
-              className="w-full accent-blue-600"
-            />
-            <div className="flex justify-between text-xs text-gray-400 dark:text-gray-500">
-              <span>Meilleure qualité</span>
-              <span>Plus rapide</span>
-            </div>
-          </div>
         </div>
       )}
     </div>
