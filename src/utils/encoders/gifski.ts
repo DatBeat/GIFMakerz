@@ -18,6 +18,14 @@ function gifskiQuality(q: Quality): number {
 export const qualityEncoder: Encoder = {
   id: 'quality',
   async encode(frames, opts, onProgress) {
+    // gifski requires at least 2 frames; surface a clear message instead of its
+    // internal throw. (The UI already enforces >= 2 frames before generating.)
+    if (frames.length < 2) {
+      throw new Error(
+        "L'encodeur Qualité requiert au moins 2 images. Utilisez l'encodeur Rapide pour une image seule."
+      );
+    }
+
     onProgress(0.1);
 
     const frameBuffers = frames.map(
@@ -35,6 +43,8 @@ export const qualityEncoder: Encoder = {
     });
 
     onProgress(1);
-    return new Blob([output as Uint8Array<ArrayBuffer>], { type: 'image/gif' });
+    // .slice() copies the WASM-memory-backed output into a standalone buffer,
+    // decoupling the Blob from gifski's linear memory (and removing a type cast).
+    return new Blob([output.slice()], { type: 'image/gif' });
   },
 };

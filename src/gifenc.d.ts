@@ -28,7 +28,7 @@ declare module 'gifenc' {
     writeFrame(index: Uint8Array, width: number, height: number, options?: WriteFrameOptions): void;
     finish(): void;
     bytes(): Uint8Array<ArrayBuffer>;
-    bytesView(): Uint8Array<ArrayBuffer>;
+    bytesView(): Uint8Array; // live view into the encoder's buffer — may be mutated/reallocated; copy before passing to Blob. Prefer bytes().
     reset(): void;
   }
 
