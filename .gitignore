@@ -13,4 +13,7 @@ dist
 .env
 *.local
 
+# Brainstorm visual companion artifacts
+.superpowers/
+
 .vercel
