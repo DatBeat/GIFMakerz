@@ -17,6 +17,11 @@ export function computeFitRect(
   fit: FitMode,
   transform?: FrameTransform
 ): FitRect {
+  // tile has no single destination rect — it is repeat-filled by the renderer.
+  if (fit === 'tile') {
+    throw new Error('computeFitRect: tile mode is handled by the renderer, not here');
+  }
+
   if (fit === 'fill') {
     return { dx: 0, dy: 0, dWidth: outW, dHeight: outH };
   }

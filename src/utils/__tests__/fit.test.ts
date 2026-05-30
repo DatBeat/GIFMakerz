@@ -28,4 +28,8 @@ describe('computeFitRect', () => {
     const shifted = computeFitRect(400, 500, 600, 400, 'custom', { scale: 2, offsetX: 1, offsetY: 0 });
     expect(shifted.dx).toBeGreaterThan(centered.dx);
   });
+
+  it('throws for tile mode (handled by the renderer)', () => {
+    expect(() => computeFitRect(400, 500, 600, 400, 'tile')).toThrow(/tile/);
+  });
 });
