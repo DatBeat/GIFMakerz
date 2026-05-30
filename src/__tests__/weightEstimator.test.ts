@@ -26,6 +26,26 @@ describe('estimateWeight', () => {
   });
 });
 
+describe('estimateWeight — encoder awareness', () => {
+  it('Fast encoder: colorCount still affects the estimate', () => {
+    const small = estimateWeight(600, 400, 4, 'medium', 16, 'fast');
+    const large = estimateWeight(600, 400, 4, 'medium', 256, 'fast');
+    expect(large).toBeGreaterThan(small);
+  });
+
+  it('Quality encoder: colorCount is ignored (gifski uses a full palette)', () => {
+    const few = estimateWeight(600, 400, 4, 'medium', 16, 'quality');
+    const many = estimateWeight(600, 400, 4, 'medium', 256, 'quality');
+    expect(many).toBe(few);
+  });
+
+  it('switching encoder changes the estimate at the same low colorCount', () => {
+    const fast = estimateWeight(600, 400, 4, 'medium', 64, 'fast');
+    const quality = estimateWeight(600, 400, 4, 'medium', 64, 'quality');
+    expect(quality).not.toBe(fast);
+  });
+});
+
 describe('getSizeCategory', () => {
   it('returns green under 250KB', () => {
     expect(getSizeCategory(100 * 1024)).toBe('green');

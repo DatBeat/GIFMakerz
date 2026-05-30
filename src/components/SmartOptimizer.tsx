@@ -23,7 +23,7 @@ export default function SmartOptimizer() {
       const aspectRatio = img.naturalHeight / img.naturalWidth;
       const currentHeight = computeHeight(img, settings.outputWidth, settings.outputHeight);
 
-      const currentEstimate = estimateWeight(settings.outputWidth, currentHeight, frames.length, settings.quality, settings.colorCount);
+      const currentEstimate = estimateWeight(settings.outputWidth, currentHeight, frames.length, settings.quality, settings.colorCount, settings.encoder);
 
       if (currentEstimate <= target * 1024) {
         setResult(`Déjà optimisé ! (~${formatSize(currentEstimate)})`);
@@ -40,7 +40,7 @@ export default function SmartOptimizer() {
       });
 
       const newHeight = Math.round(optimized.outputWidth * aspectRatio);
-      const newEstimate = estimateWeight(optimized.outputWidth, newHeight, frames.length, optimized.quality, optimized.colorCount);
+      const newEstimate = estimateWeight(optimized.outputWidth, newHeight, frames.length, optimized.quality, optimized.colorCount, settings.encoder);
       setResult(`Optimisé → ~${formatSize(newEstimate)}`);
     } catch {
       setResult('Erreur lors de l\'optimisation');

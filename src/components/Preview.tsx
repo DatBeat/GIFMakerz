@@ -69,7 +69,8 @@ export default function Preview() {
     canvasHeight,
     frames.length,
     settings.quality,
-    settings.colorCount
+    settings.colorCount,
+    settings.encoder
   );
 
   const totalDuration = frames.reduce((sum, f) => sum + (f.duration ?? settings.frameDuration), 0);

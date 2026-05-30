@@ -1,12 +1,17 @@
+import type { EncoderId, Quality } from '../types';
+
 export function estimateWeight(
   width: number,
   height: number,
   frameCount: number,
-  quality: 'low' | 'medium' | 'high',
-  colorCount: number
+  quality: Quality,
+  colorCount: number,
+  encoder: EncoderId = 'fast'
 ): number {
   const qualityFactors = { low: 0.3, medium: 0.5, high: 0.8 };
-  const colorFactor = colorCount / 256;
+  // gifenc (Fast) palette scales with colorCount; gifski (Quality) ignores
+  // colorCount and always uses a full palette + dithering.
+  const colorFactor = encoder === 'quality' ? 1 : colorCount / 256;
   const bytesPerPixel = qualityFactors[quality] * colorFactor;
   const rawSize = width * height * frameCount * bytesPerPixel;
   const compressionRatio = 0.4;
