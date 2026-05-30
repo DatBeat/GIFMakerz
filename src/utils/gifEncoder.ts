@@ -1,6 +1,6 @@
 // src/utils/gifEncoder.ts
-import type { GifSettings, GifMetadata, TextOverlay } from '../types';
-import { loadImage, drawImageToCanvas, computeHeight } from './imageUtils';
+import type { GifSettings, GifMetadata, TextOverlay, FrameFit } from '../types';
+import { loadImage, computeHeight, drawImageToFitCanvas } from './imageUtils';
 import { drawAllTextOverlays } from './textRenderer';
 import { buildFramesWithTransitions } from './transitions';
 import { encoders } from './encoders';
@@ -28,7 +28,8 @@ async function buildFrames(
   settings: GifSettings,
   height: number,
   frameDurations?: (number | undefined)[],
-  frameTextOverlays?: (TextOverlay[] | undefined)[]
+  frameTextOverlays?: (TextOverlay[] | undefined)[],
+  frameFits?: (FrameFit | undefined)[]
 ): Promise<{ canvas: HTMLCanvasElement; delay: number }[]> {
   if (settings.transition !== 'none') {
     return buildFramesWithTransitions(imageUrls, {
@@ -39,13 +40,21 @@ async function buildFrames(
       height,
       frameDurations,
       frameTextOverlays,
+      frameFits,
     });
   }
 
   const canvases: { canvas: HTMLCanvasElement; delay: number }[] = [];
   for (let i = 0; i < imageUrls.length; i++) {
     const img = await loadImage(imageUrls[i]);
-    const canvas = drawImageToCanvas(img, settings.outputWidth, height);
+    const f = frameFits?.[i];
+    const canvas = drawImageToFitCanvas(img, {
+      fit: f?.fit ?? 'cover',
+      transform: f?.transform,
+      background: f?.background,
+      width: settings.outputWidth,
+      height,
+    });
     if (frameTextOverlays?.[i]) {
       const ctx = canvas.getContext('2d')!;
       drawAllTextOverlays(ctx, frameTextOverlays[i]!, settings.outputWidth, height);
@@ -69,7 +78,8 @@ export async function encodeGif(
   settings: GifSettings,
   onProgress: (progress: number) => void,
   frameDurations?: (number | undefined)[],
-  frameTextOverlays?: (TextOverlay[] | undefined)[]
+  frameTextOverlays?: (TextOverlay[] | undefined)[],
+  frameFits?: (FrameFit | undefined)[]
 ): Promise<EncodeResult> {
   const firstImg = await loadImage(imageUrls[0]);
   const height = computeHeight(firstImg, settings.outputWidth, settings.outputHeight);
@@ -79,7 +89,8 @@ export async function encodeGif(
     settings,
     height,
     frameDurations,
-    frameTextOverlays
+    frameTextOverlays,
+    frameFits
   );
 
   const frames: FrameData[] = canvasFrames.map((cf) =>

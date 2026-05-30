@@ -1,5 +1,5 @@
-import type { TextOverlay } from '../types';
-import { loadImage, drawImageToCanvas } from './imageUtils';
+import type { TextOverlay, FrameFit } from '../types';
+import { loadImage, drawImageToFitCanvas } from './imageUtils';
 import { drawAllTextOverlays } from './textRenderer';
 
 export interface TransitionConfig {
@@ -10,6 +10,7 @@ export interface TransitionConfig {
   height: number;
   frameDurations?: (number | undefined)[];
   frameTextOverlays?: (TextOverlay[] | undefined)[];
+  frameFits?: (FrameFit | undefined)[];
 }
 
 function generateCrossfadeFrames(
@@ -69,7 +70,14 @@ export async function buildFramesWithTransitions(
   const canvases: HTMLCanvasElement[] = [];
   for (let i = 0; i < imageUrls.length; i++) {
     const img = await loadImage(imageUrls[i]);
-    const canvas = drawImageToCanvas(img, width, height);
+    const f = config.frameFits?.[i];
+    const canvas = drawImageToFitCanvas(img, {
+      fit: f?.fit ?? 'cover',
+      transform: f?.transform,
+      background: f?.background,
+      width,
+      height,
+    });
     if (config.frameTextOverlays?.[i]) {
       const ctx = canvas.getContext('2d')!;
       drawAllTextOverlays(ctx, config.frameTextOverlays[i], width, height);
