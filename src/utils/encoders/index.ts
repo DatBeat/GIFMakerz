@@ -13,7 +13,7 @@ export interface FrameData {
 export interface EncodeOpts {
   width: number;
   height: number;
-  repeat: number; // 0 = infinite, -1 = once, n>0 = loop count
+  repeat: number; // Netscape loop count: 0 = loop forever, -1 = no loop ext (plays once), n>0 = n extra iterations (plays n+1 times)
   colorCount: number; // max palette colors (Fast only)
   quality: Quality;
 }

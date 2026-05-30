@@ -46,7 +46,7 @@ describe('fastEncoder (gifenc)', () => {
     expect(blob.size).toBeGreaterThan(0);
 
     const bytes = new Uint8Array(await blob.arrayBuffer());
-    expect(String.fromCharCode(bytes[0], bytes[1], bytes[2])).toBe('GIF');
+    expect(String.fromCharCode(...Array.from(bytes.slice(0, 6)))).toBe('GIF89a');
 
     expect(onProgress).toHaveBeenCalledWith(1);
   });
