@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { FrameImage } from '../types';
@@ -57,7 +58,7 @@ export default function FrameItem({ frame, index, onRemove }: Props) {
       </button>
       <button
         onClick={() => setEditing(true)}
-        className="absolute bottom-7 right-1 bg-black/60 text-white rounded px-1.5 py-0.5 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
+        className="absolute top-7 right-1 bg-black/60 text-white rounded px-1.5 py-0.5 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/80"
         title="Cadrer l'image"
       >
         ✎ cadrer
@@ -66,7 +67,11 @@ export default function FrameItem({ frame, index, onRemove }: Props) {
         <div className="text-[10px] text-gray-500 dark:text-gray-400 truncate px-0.5">{frame.name}</div>
         <FrameDurationSlider frameId={frame.id} duration={frame.duration} />
       </div>
-      {editing && <FrameFitEditor frame={frame} onClose={() => setEditing(false)} />}
+      {editing &&
+        createPortal(
+          <FrameFitEditor frame={frame} onClose={() => setEditing(false)} />,
+          document.body
+        )}
     </div>
   );
 }
