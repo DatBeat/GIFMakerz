@@ -10,8 +10,11 @@
 - [x] Browser-validated new encoders: countdown 6f@600px → Fast 11KB / Quality 16KB (gifski wins on photo content, not flat colors) (053026)
 - [x] weightEstimator/optimizer encoder-aware — estimate reacts to encoder toggle, optimizer skips color-reduction for Quality (053026)
 - [x] Animate transitions in the preview (crossfade/slide rendered, source-frame counter, accurate duration) (053026)
+- [x] Per-frame image fit editor — fill/contain/cover/tile + manual zoom/pan, contain bg color/blur, default cover, shared drawImageWithFit renderer (preview = output); browser-validated (053126)
 
 ## Backlog
+- [ ] Remove now-unused `drawImageToCanvas` (legacy stretch) — superseded by drawImageWithFit
+- [ ] FrameFitEditor: a11y (role=dialog, focus trap, Escape) — currently backdrop-click/Annuler only
 - [ ] Undo/redo
 - [ ] PWA offline support
 - [ ] Historique local (IndexedDB)
